@@ -5,9 +5,9 @@ var zoomInterval;
 
 function initZoomControls()
 {
-    mapX = Math.floor(window.innerHeight / 100) * 100 + 'px';
-    mapY = mapWidth * (parseInt(map.style.height) / mapHeight) + 'px';
-    repositionMap(mapX, mapY);
+    map.style.height = Math.floor(window.innerHeight / 100) * 100 + 'px';
+    map.style.width = mapWidth * (parseInt(map.style.height) / mapHeight) + 'px';
+    repositionMap(0, 0);
 
     zoom = parseInt(map.style.width) / mapWidth;
     updateZoom();
@@ -51,7 +51,7 @@ function repositionMap(mapX, mapY)
 
 function changeZoom(e)
 {
-    zoom -= 0.02 * (e.deltaY / Math.abs(e.deltaY));
+    zoom -= 0.05 * (e.deltaY / Math.abs(e.deltaY));
     if(zoom < 0.1)
     {
         zoom = 0.1;
@@ -68,7 +68,7 @@ function changeZoom(e)
     {
         map.style.width = (parseInt(map.style.width) - ((parseInt(map.style.width) - toWidth) / 2)).toFixed() + 'px';
         map.style.height = mapHeight * (parseInt(map.style.width) / mapWidth) + 'px';
-        repositionMap(mapX, mapY);
+            repositionMap(parseInt(map.style.left), parseInt(map.style.top));
         updateZoom();
 
         if(Math.abs(parseInt(map.style.width) - toWidth) <= 1)
@@ -84,5 +84,5 @@ function changeZoom(e)
 
 window.onresize = function(e)
 {
-    centerMap();
+    repositionMap(parseInt(map.style.left), parseInt(map.style.top));
 }
