@@ -49,6 +49,21 @@ function repositionMap(mapX, mapY)
     map.style.top = mapY + 'px';
 }
 
+function resizeMap(newWidth, newHeight, mouseX, mouseY)
+{
+    console.log(mouseX + ", " + mouseY);
+    relMouseX = (mouseX - parseInt(map.style.left));
+    relMouseY = (mouseY - parseInt(map.style.top));
+
+    mapX = parseInt(map.style.left) + ((parseInt(map.style.width) - newWidth) * (relMouseX / parseInt(map.style.width)));
+    mapY = parseInt(map.style.top) + ((parseInt(map.style.height) - newHeight) * (relMouseY / parseInt(map.style.height)));
+
+    map.style.width = newWidth + 'px';
+    map.style.height = newHeight + 'px';
+
+    repositionMap(mapX, mapY);
+}
+
 function changeZoom(e)
 {
     zoom -= 0.05 * (e.deltaY / Math.abs(e.deltaY));
@@ -66,15 +81,14 @@ function changeZoom(e)
     zoomInterval = setInterval(frame, 50);
     function frame()
     {
-        map.style.width = (parseInt(map.style.width) - ((parseInt(map.style.width) - toWidth) / 2)).toFixed() + 'px';
-        map.style.height = mapHeight * (parseInt(map.style.width) / mapWidth) + 'px';
-            repositionMap(parseInt(map.style.left), parseInt(map.style.top));
+        newWidth = (parseInt(map.style.width) - ((parseInt(map.style.width) - toWidth) / 2)).toFixed();
+        newHeight = mapHeight * (parseInt(map.style.width) / mapWidth);
+        resizeMap(newWidth, newHeight, e.clientX, e.clientY);
         updateZoom();
 
         if(Math.abs(parseInt(map.style.width) - toWidth) <= 1)
         {
-            map.style.width = toWidth + 'px';
-            map.style.height = toHeight + 'px';
+            resizeMap(toWidth, toHeight, e.clientX, e.clientY);
             clearInterval(zoomInterval);
         }
     }
