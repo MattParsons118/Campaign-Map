@@ -21,11 +21,6 @@ body
     mix-blend-mode: color-burn;
 }
 
-.draggable
-{
-    cursor: move;
-}
-
 #info
 {
     font-size: 32px;
@@ -48,6 +43,7 @@ body
 
 #map
 {
+    cursor: move;
     background-image: url(img/map.png);
     background-size: cover;
     width: 3000px;
